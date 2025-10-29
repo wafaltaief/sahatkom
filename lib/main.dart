@@ -1,7 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'providers/auto_save_provider.dart';
+import 'widgets/auto_save_form.dart';
 
-void main() {
-  runApp(const SahatkomApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final autoSaveProvider = await AutoSaveProvider.init();
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => autoSaveProvider,
+      child: const SahatkomApp(),
+    ),
+  );
 }
 
 class SahatkomApp extends StatelessWidget {
@@ -12,10 +22,7 @@ class SahatkomApp extends StatelessWidget {
     return MaterialApp(
       title: 'Sahatkom',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.teal,
-        fontFamily: 'Roboto',
-      ),
+      theme: ThemeData(primarySwatch: Colors.teal, fontFamily: 'Roboto'),
       home: const HomePage(),
     );
   }
@@ -30,35 +37,94 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Sahatkom'),
         actions: [
+          // Navigation buttons
           TextButton(
             onPressed: () {},
             child: const Text('Accueil', style: TextStyle(color: Colors.white)),
           ),
           TextButton(
             onPressed: () {},
-            child: const Text('Docteurs', style: TextStyle(color: Colors.white)),
+            child: const Text(
+              'Docteurs',
+              style: TextStyle(color: Colors.white),
+            ),
           ),
           TextButton(
             onPressed: () {},
-            child: const Text('Rendez-vous', style: TextStyle(color: Colors.white)),
+            child: const Text(
+              'Rendez-vous',
+              style: TextStyle(color: Colors.white),
+            ),
           ),
           TextButton(
             onPressed: () {},
             child: const Text('Contact', style: TextStyle(color: Colors.white)),
           ),
+
+          const SizedBox(width: 20),
+
+          // Search bar
+          SizedBox(
+            width: 200, // Adjust width as needed
+            child: TextField(
+              style: const TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                hintText: 'Search...',
+                hintStyle: const TextStyle(color: Colors.white70),
+                filled: true,
+                fillColor: Colors.teal[700],
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 0,
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide.none,
+                ),
+              ),
+              onSubmitted: (value) {
+                print(
+                  'Searching for: $value',
+                ); // replace with real search action
+              },
+            ),
+          ),
+
+          const SizedBox(width: 20),
+
+          // Login button
+          TextButton(
+            onPressed: () {
+              // Navigate to Login Page
+            },
+            child: const Text('Login', style: TextStyle(color: Colors.white)),
+          ),
+
+          // Sign In button
+          TextButton(
+            onPressed: () {
+              // Navigate to Sign In Page
+            },
+            child: const Text('Sign In', style: TextStyle(color: Colors.white)),
+          ),
+
           const SizedBox(width: 20),
         ],
       ),
+
       body: SingleChildScrollView(
         child: Column(
           children: [
+            const AutoSaveForm(),
             // Section Hero
             Container(
               width: double.infinity,
               height: 500,
               decoration: const BoxDecoration(
                 image: DecorationImage(
-                  image: NetworkImage('https://i.ibb.co/3CkD3n9/medical-banner.jpg'),
+                  image: NetworkImage(
+                    'https://i.ibb.co/3CkD3n9/medical-banner.jpg',
+                  ),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -79,16 +145,16 @@ class HomePage extends StatelessWidget {
                       const SizedBox(height: 20),
                       const Text(
                         'Prenez rendez-vous avec vos docteurs facilement',
-                        style: TextStyle(
-                          color: Colors.white70,
-                          fontSize: 24,
-                        ),
+                        style: TextStyle(color: Colors.white70, fontSize: 24),
                       ),
                       const SizedBox(height: 30),
                       ElevatedButton(
                         onPressed: () {},
                         style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 30,
+                            vertical: 15,
+                          ),
                         ),
                         child: const Text('Réserver un rendez-vous'),
                       ),
@@ -105,10 +171,7 @@ class HomePage extends StatelessWidget {
                 children: [
                   const Text(
                     'Nos Services',
-                    style: TextStyle(
-                      fontSize: 36,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 30),
                   Row(
@@ -117,7 +180,8 @@ class HomePage extends StatelessWidget {
                       ServiceCard(
                         icon: Icons.medical_services,
                         title: 'Consultations',
-                        description: 'Consultez des spécialistes en quelques clics.',
+                        description:
+                            'Consultez des spécialistes en quelques clics.',
                       ),
                       ServiceCard(
                         icon: Icons.schedule,
@@ -127,7 +191,8 @@ class HomePage extends StatelessWidget {
                       ServiceCard(
                         icon: Icons.local_hospital,
                         title: 'Hôpitaux partenaires',
-                        description: 'Accès aux meilleurs établissements de santé.',
+                        description:
+                            'Accès aux meilleurs établissements de santé.',
                       ),
                     ],
                   ),
