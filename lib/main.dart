@@ -1,17 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'providers/auto_save_provider.dart';
-import 'widgets/auto_save_form.dart';
+// import 'package:firebase_core/firebase_core.dart';
+// import 'package:sahatkom/login_page.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  final autoSaveProvider = await AutoSaveProvider.init();
-  runApp(
-    ChangeNotifierProvider(
-      create: (_) => autoSaveProvider,
-      child: const SahatkomApp(),
-    ),
-  );
+void main() {
+  runApp(const SahatkomApp());
 }
 
 class SahatkomApp extends StatelessWidget {
@@ -37,7 +29,6 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Sahatkom'),
         actions: [
-          // Navigation buttons
           TextButton(
             onPressed: () {},
             child: const Text('Accueil', style: TextStyle(color: Colors.white)),
@@ -60,62 +51,12 @@ class HomePage extends StatelessWidget {
             onPressed: () {},
             child: const Text('Contact', style: TextStyle(color: Colors.white)),
           ),
-
-          const SizedBox(width: 20),
-
-          // Search bar
-          SizedBox(
-            width: 200, // Adjust width as needed
-            child: TextField(
-              style: const TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                hintText: 'Search...',
-                hintStyle: const TextStyle(color: Colors.white70),
-                filled: true,
-                fillColor: Colors.teal[700],
-                contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 0,
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide.none,
-                ),
-              ),
-              onSubmitted: (value) {
-                print(
-                  'Searching for: $value',
-                ); // replace with real search action
-              },
-            ),
-          ),
-
-          const SizedBox(width: 20),
-
-          // Login button
-          TextButton(
-            onPressed: () {
-              // Navigate to Login Page
-            },
-            child: const Text('Login', style: TextStyle(color: Colors.white)),
-          ),
-
-          // Sign In button
-          TextButton(
-            onPressed: () {
-              // Navigate to Sign In Page
-            },
-            child: const Text('Sign In', style: TextStyle(color: Colors.white)),
-          ),
-
           const SizedBox(width: 20),
         ],
       ),
-
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const AutoSaveForm(),
             // Section Hero
             Container(
               width: double.infinity,
