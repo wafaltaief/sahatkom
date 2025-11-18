@@ -20,6 +20,47 @@ class SahatkomApp extends StatelessWidget {
   }
 }
 
+class ServiceCard extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String description;
+
+  const ServiceCard({
+    super.key,
+    required this.icon,
+    required this.title,
+    required this.description,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 5,
+      child: Container(
+        width: 250,
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            Icon(icon, size: 60, color: Colors.teal),
+            const SizedBox(height: 20),
+            Text(
+              title,
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 10),
+            Text(
+              description,
+              style: const TextStyle(fontSize: 16, color: Colors.black54),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
@@ -29,27 +70,40 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Sahatkom'),
         actions: [
-          TextButton(
-            onPressed: () {},
-            child: const Text('Accueil', style: TextStyle(color: Colors.white)),
-          ),
-          TextButton(
-            onPressed: () {},
-            child: const Text(
-              'Docteurs',
-              style: TextStyle(color: Colors.white),
+          // Search bar inside the app bar
+          Container(
+            width: 200,
+            margin: const EdgeInsets.symmetric(vertical: 8),
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: 'Recherche...',
+                hintStyle: const TextStyle(color: Colors.white70),
+                prefixIcon: const Icon(Icons.search, color: Colors.white),
+                filled: true,
+                fillColor: Colors.teal.shade700,
+                contentPadding: const EdgeInsets.symmetric(
+                  vertical: 0,
+                  horizontal: 10,
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                  borderSide: BorderSide.none,
+                ),
+              ),
+              style: const TextStyle(color: Colors.white),
+              cursorColor: Colors.white,
+              onSubmitted: (query) {
+                // Implement search logic here
+                print('Search query: $query');
+              },
             ),
           ),
+          const SizedBox(width: 10),
           TextButton(
-            onPressed: () {},
-            child: const Text(
-              'Rendez-vous',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-          TextButton(
-            onPressed: () {},
-            child: const Text('Contact', style: TextStyle(color: Colors.white)),
+            onPressed: () {
+              // Implement login functionality here
+            },
+            child: const Text('Login', style: TextStyle(color: Colors.white)),
           ),
           const SizedBox(width: 20),
         ],
@@ -121,21 +175,22 @@ class HomePage extends StatelessWidget {
                     alignment: WrapAlignment.center,
                     children: const [
                       ServiceCard(
-                        icon: Icons.medical_services,
-                        title: 'Consultations',
+                        icon: Icons.calendar_today,
+                        title: 'Prise de Rendez-vous',
                         description:
-                            'Consultez des spécialistes en quelques clics.',
-                      ),
-                      ServiceCard(
-                        icon: Icons.schedule,
-                        title: 'Rendez-vous rapides',
-                        description: 'Planifiez votre rendez-vous facilement.',
+                            'Réservez des rendez-vous avec des spécialistes en quelques clics.',
                       ),
                       ServiceCard(
                         icon: Icons.local_hospital,
-                        title: 'Hôpitaux partenaires',
+                        title: 'Consultations en Ligne',
                         description:
-                            'Accès aux meilleurs établissements de santé.',
+                            'Consultez des médecins depuis le confort de votre maison.',
+                      ),
+                      ServiceCard(
+                        icon: Icons.medical_services,
+                        title: 'Dossiers Médicaux',
+                        description:
+                            'Accédez et gérez vos dossiers médicaux en toute sécurité.',
                       ),
                     ],
                   ),
@@ -153,47 +208,6 @@ class HomePage extends StatelessWidget {
                   style: TextStyle(color: Colors.white),
                 ),
               ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class ServiceCard extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final String description;
-
-  const ServiceCard({
-    super.key,
-    required this.icon,
-    required this.title,
-    required this.description,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 5,
-      child: Container(
-        width: 250,
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            Icon(icon, size: 60, color: Colors.teal),
-            const SizedBox(height: 20),
-            Text(
-              title,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 10),
-            Text(
-              description,
-              style: const TextStyle(fontSize: 16, color: Colors.black54),
-              textAlign: TextAlign.center,
             ),
           ],
         ),
