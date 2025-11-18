@@ -156,7 +156,7 @@ class HomePage extends StatelessWidget {
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage(
-                    'assets/hero_image.png',
+                    'assets/images/hero_image.png',
                   ), // <-- your uploaded image
                   fit: BoxFit.cover,
                 ),
