@@ -70,7 +70,7 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               child: Container(
-                color: Colors.black.withOpacity(0.5),
+                color: Colors.black54,
                 child: Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -115,8 +115,10 @@ class HomePage extends StatelessWidget {
                     style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 30),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  Wrap(
+                    spacing: 20,
+                    runSpacing: 20,
+                    alignment: WrapAlignment.center,
                     children: const [
                       ServiceCard(
                         icon: Icons.medical_services,
