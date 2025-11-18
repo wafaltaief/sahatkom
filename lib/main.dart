@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-// import 'package:firebase_core/firebase_core.dart';
-// import 'package:sahatkom/login_page.dart';
 
 void main() {
   runApp(const SahatkomApp());
@@ -20,6 +18,9 @@ class SahatkomApp extends StatelessWidget {
   }
 }
 
+// ------------------------------------------------------
+// SERVICE CARD
+// ------------------------------------------------------
 class ServiceCard extends StatelessWidget {
   final IconData icon;
   final String title;
@@ -36,6 +37,7 @@ class ServiceCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 5,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       child: Container(
         width: 250,
         padding: const EdgeInsets.all(20),
@@ -61,6 +63,42 @@ class ServiceCard extends StatelessWidget {
   }
 }
 
+// ------------------------------------------------------
+// SPECIALTY CARD
+// ------------------------------------------------------
+class SpecialtyCard extends StatelessWidget {
+  final IconData icon;
+  final String name;
+
+  const SpecialtyCard({super.key, required this.icon, required this.name});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      child: Container(
+        width: 180,
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            Icon(icon, size: 50, color: Colors.teal),
+            const SizedBox(height: 15),
+            Text(
+              name,
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// ------------------------------------------------------
+// HOME PAGE
+// ------------------------------------------------------
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
@@ -70,7 +108,7 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Sahatkom'),
         actions: [
-          // Search bar inside the app bar
+          // Search bar
           Container(
             width: 200,
             margin: const EdgeInsets.symmetric(vertical: 8),
@@ -93,38 +131,38 @@ class HomePage extends StatelessWidget {
               style: const TextStyle(color: Colors.white),
               cursorColor: Colors.white,
               onSubmitted: (query) {
-                // Implement search logic here
                 print('Search query: $query');
               },
             ),
           ),
           const SizedBox(width: 10),
           TextButton(
-            onPressed: () {
-              // Implement login functionality here
-            },
+            onPressed: () {},
             child: const Text('Login', style: TextStyle(color: Colors.white)),
           ),
           const SizedBox(width: 20),
         ],
       ),
+
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Section Hero
+            // ----------------------------------------------------
+            // HERO SECTION
+            // ----------------------------------------------------
             Container(
               width: double.infinity,
               height: 500,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: NetworkImage(
-                    'https://i.ibb.co/3CkD3n9/medical-banner.jpg',
-                  ),
+                  image: AssetImage(
+                    'assets/hero_image.png',
+                  ), // <-- your uploaded image
                   fit: BoxFit.cover,
                 ),
               ),
               child: Container(
-                color: Colors.black54,
+                color: Colors.black54, // semi-transparent overlay
                 child: Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -159,7 +197,9 @@ class HomePage extends StatelessWidget {
               ),
             ),
 
-            // Section Services
+            // ----------------------------------------------------
+            // SERVICES SECTION
+            // ----------------------------------------------------
             Padding(
               padding: const EdgeInsets.all(40.0),
               child: Column(
@@ -198,7 +238,44 @@ class HomePage extends StatelessWidget {
               ),
             ),
 
-            // Section Footer
+            // ----------------------------------------------------
+            // SPECIALTIES SECTION
+            // ----------------------------------------------------
+            Padding(
+              padding: const EdgeInsets.all(40.0),
+              child: Column(
+                children: [
+                  const Text(
+                    'Spécialités Médicales',
+                    style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 30),
+                  Wrap(
+                    spacing: 20,
+                    runSpacing: 20,
+                    alignment: WrapAlignment.center,
+                    children: const [
+                      SpecialtyCard(icon: Icons.favorite, name: "Cardiologie"),
+                      SpecialtyCard(
+                        icon: Icons.visibility,
+                        name: "Ophtalmologie",
+                      ),
+                      SpecialtyCard(icon: Icons.child_care, name: "Pédiatrie"),
+                      SpecialtyCard(icon: Icons.spa, name: "Dermatologie"),
+                      SpecialtyCard(
+                        icon: Icons.psychology,
+                        name: "Psychiatrie",
+                      ),
+                      SpecialtyCard(icon: Icons.woman, name: "Gynécologie"),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+
+            // ----------------------------------------------------
+            // FOOTER
+            // ----------------------------------------------------
             Container(
               color: Colors.teal,
               padding: const EdgeInsets.all(20),
