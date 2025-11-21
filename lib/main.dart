@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'login_page.dart';
+import 'firebase_options.dart';
 
-void main() {
+void main() async {
+    WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const SahatkomApp());
 }
 
@@ -137,9 +144,15 @@ class HomePage extends StatelessWidget {
           ),
           const SizedBox(width: 10),
           TextButton(
-            onPressed: () {},
-            child: const Text('Login', style: TextStyle(color: Colors.white)),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => LoginPage()),
+              );
+            },
+            child: const Text('Login', style: TextStyle(color: Colors.black)),
           ),
+
           const SizedBox(width: 20),
         ],
       ),
