@@ -12,7 +12,10 @@ class SahatkomApp extends StatelessWidget {
     return MaterialApp(
       title: 'Sahatkom',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primarySwatch: Colors.teal, fontFamily: 'Roboto'),
+      theme: ThemeData(
+        primarySwatch: Colors.blue, // default MaterialColor
+        fontFamily: 'Roboto',
+      ),
       home: const HomePage(),
     );
   }
