@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+
 import 'login_page.dart';
 import 'firebase_options.dart';
+import 'specialties_page.dart';
 
 void main() async {
-    WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -19,7 +21,10 @@ class SahatkomApp extends StatelessWidget {
     return MaterialApp(
       title: 'Sahatkom',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primarySwatch: Colors.teal, fontFamily: 'Roboto'),
+      theme: ThemeData(
+        primarySwatch: Colors.teal,
+        fontFamily: 'Roboto',
+      ),
       home: const HomePage(),
     );
   }
@@ -45,25 +50,29 @@ class ServiceCard extends StatelessWidget {
     return Card(
       elevation: 5,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-      child: Container(
-        width: 250,
+      child: Padding(
         padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            Icon(icon, size: 60, color: Colors.teal),
-            const SizedBox(height: 20),
-            Text(
-              title,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 10),
-            Text(
-              description,
-              style: const TextStyle(fontSize: 16, color: Colors.black54),
-              textAlign: TextAlign.center,
-            ),
-          ],
+        child: SizedBox(
+          width: 250,
+          child: Column(
+            children: [
+              Icon(icon, size: 60, color: Colors.teal),
+              const SizedBox(height: 20),
+              Text(
+                title,
+                style: const TextStyle(
+                    fontSize: 20, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 10),
+              Text(
+                description,
+                style:
+                    const TextStyle(fontSize: 16, color: Colors.black54),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -71,32 +80,45 @@ class ServiceCard extends StatelessWidget {
 }
 
 // ------------------------------------------------------
-// SPECIALTY CARD
+// SPECIALTY CARD (CLIC ACTIVE)
 // ------------------------------------------------------
 class SpecialtyCard extends StatelessWidget {
   final IconData icon;
   final String name;
+  final VoidCallback? onTap;
 
-  const SpecialtyCard({super.key, required this.icon, required this.name});
+  const SpecialtyCard({
+    super.key,
+    required this.icon,
+    required this.name,
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-      child: Container(
-        width: 180,
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            Icon(icon, size: 50, color: Colors.teal),
-            const SizedBox(height: 15),
-            Text(
-              name,
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(15),
+      child: Card(
+        elevation: 4,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: SizedBox(
+            width: 180,
+            child: Column(
+              children: [
+                Icon(icon, size: 50, color: Colors.teal),
+                const SizedBox(height: 15),
+                Text(
+                  name,
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
@@ -115,7 +137,6 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Sahatkom'),
         actions: [
-          // Search bar
           Container(
             width: 200,
             margin: const EdgeInsets.symmetric(vertical: 8),
@@ -126,23 +147,16 @@ class HomePage extends StatelessWidget {
                 prefixIcon: const Icon(Icons.search, color: Colors.white),
                 filled: true,
                 fillColor: Colors.teal.shade700,
-                contentPadding: const EdgeInsets.symmetric(
-                  vertical: 0,
-                  horizontal: 10,
-                ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(30),
                   borderSide: BorderSide.none,
                 ),
               ),
               style: const TextStyle(color: Colors.white),
-              cursorColor: Colors.white,
-              onSubmitted: (query) {
-                print('Search query: $query');
-              },
             ),
           ),
           const SizedBox(width: 10),
+
           TextButton(
             onPressed: () {
               Navigator.push(
@@ -160,22 +174,18 @@ class HomePage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // ----------------------------------------------------
-            // HERO SECTION
-            // ----------------------------------------------------
+            // HERO
             Container(
               width: double.infinity,
               height: 500,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage(
-                    'assets/images/hero_image.png',
-                  ), // <-- your uploaded image
+                  image: AssetImage('assets/images/hero_image.png'),
                   fit: BoxFit.cover,
                 ),
               ),
               child: Container(
-                color: Colors.black54, // semi-transparent overlay
+                color: Colors.black54,
                 child: Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -196,12 +206,6 @@ class HomePage extends StatelessWidget {
                       const SizedBox(height: 30),
                       ElevatedButton(
                         onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 30,
-                            vertical: 15,
-                          ),
-                        ),
                         child: const Text('Réserver un rendez-vous'),
                       ),
                     ],
@@ -210,40 +214,35 @@ class HomePage extends StatelessWidget {
               ),
             ),
 
-            // ----------------------------------------------------
-            // SERVICES SECTION
-            // ----------------------------------------------------
+            // SERVICES
             Padding(
-              padding: const EdgeInsets.all(40.0),
+              padding: const EdgeInsets.all(40),
               child: Column(
                 children: [
                   const Text(
                     'Nos Services',
-                    style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontSize: 36, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 30),
                   Wrap(
                     spacing: 20,
                     runSpacing: 20,
-                    alignment: WrapAlignment.center,
                     children: const [
                       ServiceCard(
                         icon: Icons.calendar_today,
                         title: 'Prise de Rendez-vous',
-                        description:
-                            'Réservez des rendez-vous avec des spécialistes en quelques clics.',
+                        description: 'Réservez des rendez-vous.',
                       ),
                       ServiceCard(
                         icon: Icons.local_hospital,
                         title: 'Consultations en Ligne',
-                        description:
-                            'Consultez des médecins depuis le confort de votre maison.',
+                        description: 'Consultez des médecins.',
                       ),
                       ServiceCard(
                         icon: Icons.medical_services,
                         title: 'Dossiers Médicaux',
-                        description:
-                            'Accédez et gérez vos dossiers médicaux en toute sécurité.',
+                        description: 'Accédez à vos dossiers.',
                       ),
                     ],
                   ),
@@ -251,44 +250,62 @@ class HomePage extends StatelessWidget {
               ),
             ),
 
-            // ----------------------------------------------------
-            // SPECIALTIES SECTION
-            // ----------------------------------------------------
+            // SPECIALTIES
             Padding(
-              padding: const EdgeInsets.all(40.0),
+              padding: const EdgeInsets.all(40),
               child: Column(
                 children: [
                   const Text(
                     'Spécialités Médicales',
-                    style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontSize: 36, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 30),
+ 
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => const SpecialtiesPage()),
+                      );
+                    },
+                    child: const Text("Voir toutes les spécialités"),
+                  ),
+
+                  const SizedBox(height: 30),
+
                   Wrap(
                     spacing: 20,
                     runSpacing: 20,
-                    alignment: WrapAlignment.center,
-                    children: const [
-                      SpecialtyCard(icon: Icons.favorite, name: "Cardiologie"),
+                    children: [
+                      SpecialtyCard(
+                        icon: Icons.favorite,
+                        name: "Cardiologie",
+                        onTap: () {},
+                      ),
                       SpecialtyCard(
                         icon: Icons.visibility,
                         name: "Ophtalmologie",
+                        onTap: () {},
                       ),
-                      SpecialtyCard(icon: Icons.child_care, name: "Pédiatrie"),
-                      SpecialtyCard(icon: Icons.spa, name: "Dermatologie"),
                       SpecialtyCard(
-                        icon: Icons.psychology,
-                        name: "Psychiatrie",
+                        icon: Icons.child_care,
+                        name: "Pédiatrie",
+                        onTap: () {},
                       ),
-                      SpecialtyCard(icon: Icons.woman, name: "Gynécologie"),
+                      SpecialtyCard(
+                        icon: Icons.spa,
+                        name: "Dermatologie",
+                        onTap: () {},
+                      ),
                     ],
                   ),
                 ],
               ),
             ),
 
-            // ----------------------------------------------------
             // FOOTER
-            // ----------------------------------------------------
             Container(
               color: Colors.teal,
               padding: const EdgeInsets.all(20),
