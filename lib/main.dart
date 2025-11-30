@@ -3,13 +3,11 @@ import 'package:firebase_core/firebase_core.dart';
 
 import 'login_page.dart';
 import 'firebase_options.dart';
-import 'specialties_page.dart';
+import 'doctors_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const SahatkomApp());
 }
 
@@ -21,14 +19,7 @@ class SahatkomApp extends StatelessWidget {
     return MaterialApp(
       title: 'Sahatkom',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-<<<<<<< HEAD
-        primarySwatch: Colors.teal,
-=======
-        primarySwatch: Colors.blue, // default MaterialColor
->>>>>>> aad127cc411c082caac8623e9fbc0755fba02770
-        fontFamily: 'Roboto',
-      ),
+      theme: ThemeData(primarySwatch: Colors.teal, fontFamily: 'Roboto'),
       home: const HomePage(),
     );
   }
@@ -65,14 +56,15 @@ class ServiceCard extends StatelessWidget {
               Text(
                 title,
                 style: const TextStyle(
-                    fontSize: 20, fontWeight: FontWeight.bold),
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 10),
               Text(
                 description,
-                style:
-                    const TextStyle(fontSize: 16, color: Colors.black54),
+                style: const TextStyle(fontSize: 16, color: Colors.black54),
                 textAlign: TextAlign.center,
               ),
             ],
@@ -117,7 +109,9 @@ class SpecialtyCard extends StatelessWidget {
                 Text(
                   name,
                   style: const TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.bold),
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
                   textAlign: TextAlign.center,
                 ),
               ],
@@ -225,8 +219,7 @@ class HomePage extends StatelessWidget {
                 children: [
                   const Text(
                     'Nos Services',
-                    style: TextStyle(
-                        fontSize: 36, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 30),
                   Wrap(
@@ -261,22 +254,8 @@ class HomePage extends StatelessWidget {
                 children: [
                   const Text(
                     'Spécialités Médicales',
-                    style: TextStyle(
-                        fontSize: 36, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
                   ),
-                  const SizedBox(height: 30),
- 
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) => const SpecialtiesPage()),
-                      );
-                    },
-                    child: const Text("Voir toutes les spécialités"),
-                  ),
-
                   const SizedBox(height: 30),
 
                   Wrap(
@@ -286,22 +265,55 @@ class HomePage extends StatelessWidget {
                       SpecialtyCard(
                         icon: Icons.favorite,
                         name: "Cardiologie",
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) =>
+                                  DoctorsPage(specialty: "Cardiologie"),
+                            ),
+                          );
+                        },
                       ),
                       SpecialtyCard(
                         icon: Icons.visibility,
                         name: "Ophtalmologie",
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) =>
+                                  DoctorsPage(specialty: "Ophtalmologie"),
+                            ),
+                          );
+                        },
                       ),
                       SpecialtyCard(
                         icon: Icons.child_care,
                         name: "Pédiatrie",
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) =>
+                                  DoctorsPage(specialty: "Pédiatrie"),
+                            ),
+                          );
+                        },
                       ),
+
                       SpecialtyCard(
                         icon: Icons.spa,
                         name: "Dermatologie",
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) =>
+                                  DoctorsPage(specialty: "Dermatologie"),
+                            ),
+                          );
+                        },
                       ),
                     ],
                   ),
