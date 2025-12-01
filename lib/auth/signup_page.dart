@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'signup_page.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class SignupPage extends StatefulWidget {
+  const SignupPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<SignupPage> createState() => _SignupPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignupPageState extends State<SignupPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
   final _auth = FirebaseAuth.instance;
 
   @override
@@ -25,13 +25,13 @@ class _LoginPageState extends State<LoginPage> {
             borderRadius: BorderRadius.circular(20),
           ),
           child: Container(
-            width: 350, 
+            width: 350,
             padding: const EdgeInsets.all(25),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 const Text(
-                  'Login',
+                  'Signup',
                   style: TextStyle(
                     fontSize: 26,
                     fontWeight: FontWeight.bold,
@@ -55,17 +55,35 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   obscureText: true,
                 ),
+                const SizedBox(height: 15),
+                TextField(
+                  controller: _confirmPasswordController,
+                  decoration: const InputDecoration(
+                    labelText: 'Confirm Password',
+                    border: OutlineInputBorder(),
+                  ),
+                  obscureText: true,
+                ),
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () async {
+                    if (_passwordController.text.trim() !=
+                        _confirmPasswordController.text.trim()) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Passwords do not match')),
+                      );
+                      return;
+                    }
+
                     try {
-                      await _auth.signInWithEmailAndPassword(
+                      await _auth.createUserWithEmailAndPassword(
                         email: _emailController.text.trim(),
                         password: _passwordController.text.trim(),
                       );
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Login Successful')),
+                        const SnackBar(content: Text('Signup Successful')),
                       );
+                      Navigator.pushReplacementNamed(context, '/');
                     } on FirebaseAuthException catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text('Error: ${e.message}')),
@@ -76,18 +94,15 @@ class _LoginPageState extends State<LoginPage> {
                     backgroundColor: Colors.teal,
                     minimumSize: const Size(double.infinity, 50),
                   ),
-                  child: const Text('Login'),
+                  child: const Text('Signup'),
                 ),
                 const SizedBox(height: 10),
                 TextButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) =>SignupPage()),
-                    );
+                    Navigator.pushNamed(context, '/login');
                   },
                   child: const Text(
-                    'Don\'t have an account? Signup',
+                    'Already have an account? Login',
                     style: TextStyle(color: Colors.teal),
                   ),
                 ),
