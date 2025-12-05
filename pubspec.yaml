@@ -1,4 +1,5 @@
 name: sahatkom
+<<<<<<< HEAD
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -16,11 +17,16 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
+=======
+description: "Application de prise de rendez-vous médicaux"
+
+>>>>>>> 34958d6a263ce2f6eded32dd2ad865b7bfab3b8a
 version: 1.0.0+1
 
 environment:
   sdk: ^3.9.2
 
+<<<<<<< HEAD
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
 # consider running `flutter pub upgrade --major-versions`. Alternatively,
@@ -37,10 +43,23 @@ dependencies:
   cupertino_icons: ^1.0.8
   shared_preferences: ^2.5.3
   provider: ^6.1.5+1
+=======
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # Firebase
+  firebase_core: ^4.2.1
+  firebase_auth: ^6.1.2
+  
+  # Icons
+  cupertino_icons: ^1.0.8
+>>>>>>> 34958d6a263ce2f6eded32dd2ad865b7bfab3b8a
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+<<<<<<< HEAD
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -53,11 +72,16 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter packages.
+=======
+  flutter_lints: ^5.0.0
+
+>>>>>>> 34958d6a263ce2f6eded32dd2ad865b7bfab3b8a
 flutter:
   uses-material-design: true
 
   assets:
     - assets/images/hero_image.png
+<<<<<<< HEAD
 
   # To add assets to your application, add an assets section, like this:
   # assets:
@@ -89,3 +113,7 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+=======
+    - assets/images/doctor_avatar.png
+    - assets/images/doctors/
+>>>>>>> 34958d6a263ce2f6eded32dd2ad865b7bfab3b8a
