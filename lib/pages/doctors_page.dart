@@ -1,12 +1,12 @@
-// lib/pages/doctors_page.dart
 import 'package:flutter/material.dart';
 import 'appointment_page.dart';
 import '../utils/doctor_images.dart';
 
 class DoctorsPage extends StatelessWidget {
   final String specialty;
+  final String? searchQuery; // nouveau paramètre optionnel
 
-  const DoctorsPage({super.key, required this.specialty});
+  const DoctorsPage({super.key, required this.specialty, this.searchQuery});
 
   @override
   Widget build(BuildContext context) {
@@ -74,6 +74,17 @@ class DoctorsPage extends StatelessWidget {
 
     final doctors = doctorsBySpecialty[specialty] ?? [];
 
+    // Si searchQuery est fourni -> filtrer la liste pour n'afficher que les correspondances
+    final List<String> filteredDoctors;
+    if (searchQuery != null && searchQuery!.isNotEmpty) {
+      final q = searchQuery!.toLowerCase();
+      filteredDoctors = doctors
+          .where((d) => d.toLowerCase().contains(q))
+          .toList();
+    } else {
+      filteredDoctors = doctors;
+    }
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -81,7 +92,9 @@ class DoctorsPage extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          "Docteurs en $specialty",
+          searchQuery == null || searchQuery!.isEmpty
+              ? "Docteurs en $specialty"
+              : "Résultats pour \"${searchQuery!}\"",
           style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -105,16 +118,12 @@ class DoctorsPage extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFFE0F2F1),
-              Color(0xFFB2DFDB),
-              Colors.white,
-            ],
+            colors: [Color(0xFFE0F2F1), Color(0xFFB2DFDB), Colors.white],
           ),
         ),
         child: Padding(
           padding: const EdgeInsets.all(20),
-          child: doctors.isEmpty
+          child: filteredDoctors.isEmpty
               ? Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -126,11 +135,8 @@ class DoctorsPage extends StatelessWidget {
                       ),
                       const SizedBox(height: 20),
                       const Text(
-                        "Aucun docteur disponible pour le moment.",
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.grey,
-                        ),
+                        "Aucun docteur trouvé pour cette recherche.",
+                        style: TextStyle(fontSize: 18, color: Colors.grey),
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 30),
@@ -147,7 +153,7 @@ class DoctorsPage extends StatelessWidget {
                           ),
                         ),
                         child: const Text(
-                          'Retour aux spécialités',
+                          'Retour',
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
@@ -161,10 +167,10 @@ class DoctorsPage extends StatelessWidget {
                     crossAxisSpacing: 20,
                     mainAxisSpacing: 20,
                   ),
-                  itemCount: doctors.length,
+                  itemCount: filteredDoctors.length,
                   itemBuilder: (context, index) {
-                    final doctorName = doctors[index];
-                    
+                    final doctorName = filteredDoctors[index];
+
                     return Card(
                       elevation: 8,
                       shape: RoundedRectangleBorder(
@@ -181,16 +187,13 @@ class DoctorsPage extends StatelessWidget {
                             gradient: const LinearGradient(
                               begin: Alignment.topCenter,
                               end: Alignment.bottomCenter,
-                              colors: [
-                                Colors.white,
-                                Color(0xFFE0F2F1),
-                              ],
+                              colors: [Colors.white, Color(0xFFE0F2F1)],
                             ),
                           ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              // Avatar - صورة الطبيب الخاصة
+                              // Avatar
                               Container(
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
@@ -218,7 +221,9 @@ class DoctorsPage extends StatelessWidget {
 
                               // Doctor Name
                               Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 10),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                ),
                                 child: Text(
                                   doctorName,
                                   textAlign: TextAlign.center,
@@ -274,7 +279,11 @@ class DoctorsPage extends StatelessWidget {
                                 ),
                                 child: TextButton(
                                   onPressed: () {
-                                    _bookAppointment(context, doctorName, specialty);
+                                    _bookAppointment(
+                                      context,
+                                      doctorName,
+                                      specialty,
+                                    );
                                   },
                                   style: TextButton.styleFrom(
                                     padding: EdgeInsets.zero,
@@ -304,8 +313,12 @@ class DoctorsPage extends StatelessWidget {
     );
   }
 
-  // عرض تفاصيل الطبيب
-  void _showDoctorDetails(BuildContext context, String doctorName, String specialty) {
+  // Doctor details bottom sheet (unchanged)
+  void _showDoctorDetails(
+    BuildContext context,
+    String doctorName,
+    String specialty,
+  ) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -340,7 +353,9 @@ class DoctorsPage extends StatelessWidget {
                   children: [
                     CircleAvatar(
                       radius: 40,
-                      backgroundImage: AssetImage(DoctorImages.getImage(doctorName)),
+                      backgroundImage: AssetImage(
+                        DoctorImages.getImage(doctorName),
+                      ),
                     ),
                     const SizedBox(width: 20),
                     Expanded(
@@ -366,14 +381,22 @@ class DoctorsPage extends StatelessWidget {
                           const SizedBox(height: 10),
                           Row(
                             children: [
-                              Icon(Icons.star, color: Colors.amber.shade700, size: 20),
+                              Icon(
+                                Icons.star,
+                                color: Colors.amber.shade700,
+                                size: 20,
+                              ),
                               const SizedBox(width: 5),
                               const Text(
                                 '4.8/5',
                                 style: TextStyle(fontWeight: FontWeight.w500),
                               ),
                               const SizedBox(width: 15),
-                              Icon(Icons.access_time, color: Colors.grey.shade600, size: 18),
+                              Icon(
+                                Icons.access_time,
+                                color: Colors.grey.shade600,
+                                size: 18,
+                              ),
                               const SizedBox(width: 5),
                               const Text(
                                 '10 ans exp.',
@@ -389,10 +412,7 @@ class DoctorsPage extends StatelessWidget {
                 const SizedBox(height: 30),
                 const Text(
                   'À propos',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 10),
                 Text(
@@ -402,10 +422,7 @@ class DoctorsPage extends StatelessWidget {
                 const SizedBox(height: 20),
                 const Text(
                   'Disponibilités',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 10),
                 Wrap(
@@ -447,20 +464,22 @@ class DoctorsPage extends StatelessWidget {
     );
   }
 
-  // حجز موعد
-  void _bookAppointment(BuildContext context, String doctorName, String specialty) {
+  // Book appointment (unchanged)
+  void _bookAppointment(
+    BuildContext context,
+    String doctorName,
+    String specialty,
+  ) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => AppointmentPage(
-          doctorName: doctorName,
-          specialty: specialty,
-        ),
+        builder: (context) =>
+            AppointmentPage(doctorName: doctorName, specialty: specialty),
       ),
     );
   }
 
-  // خيارات الفلتر
+  // Filter options (unchanged)
   void _showFilterOptions(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -476,10 +495,7 @@ class DoctorsPage extends StatelessWidget {
             children: [
               const Text(
                 'Filtrer les médecins',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 20),
               ListTile(

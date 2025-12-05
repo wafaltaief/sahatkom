@@ -55,11 +55,7 @@ class SpecialtyCard extends StatelessWidget {
   final IconData icon;
   final String name;
 
-  const SpecialtyCard({
-    super.key,
-    required this.icon,
-    required this.name,
-  });
+  const SpecialtyCard({super.key, required this.icon, required this.name});
 
   @override
   Widget build(BuildContext context) {
@@ -99,14 +95,90 @@ class SpecialtyCard extends StatelessWidget {
 // ------------------------------------------------------
 // HOME PAGE
 // ------------------------------------------------------
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final TextEditingController _searchController = TextEditingController();
+
+  // Liste complète (même contenu que dans DoctorsPage)
+  final Map<String, List<String>> doctorsBySpecialty = {
+    "Cardiologie": [
+      "Dr. Ahmed Ben Salah",
+      "Dr. Leila Trabelsi",
+      "Dr. Rached Kefi",
+      "Dr. Fethi Ben Miled",
+    ],
+    "Dermatologie": [
+      "Dr. Sami Chouchène",
+      "Dr. Rania Ben Youssef",
+      "Dr. Maha Oueslati",
+      "Dr. Aymen Ben Fraj",
+    ],
+    "Pédiatrie": [
+      "Dr. Mohamed Jlassi",
+      "Dr. Farah Gharbi",
+      "Dr. Manel Chikhaoui",
+      "Dr. Sana Zribi",
+    ],
+    "Ophtalmologie": [
+      "Dr. Sofien Khemiri",
+      "Dr. Amina Hajri",
+      "Dr. Zied Fkiri",
+      "Dr. Rim Jebali",
+    ],
+    "Psychiatrie": [
+      "Dr. Walid Zoghlami",
+      "Dr. Mouna Fathallah",
+      "Dr. Yassin Ben Hassine",
+      "Dr. Houssem Zouari",
+    ],
+    "Gynécologie": [
+      "Dr. Henda Mabrouk",
+      "Dr. Yosra Ferchichi",
+      "Dr. Sana Ayari",
+      "Dr. Nebiha Saidi",
+    ],
+  };
+
+  void searchDoctor() {
+    final query = _searchController.text.trim().toLowerCase();
+    if (query.isEmpty) return;
+
+    // on cherche le docteur dans toutes les spécialités
+    for (var entry in doctorsBySpecialty.entries) {
+      for (var doctor in entry.value) {
+        if (doctor.toLowerCase().contains(query)) {
+          // on envoie la specialty ET la query à DoctorsPage
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) =>
+                  DoctorsPage(specialty: entry.key, searchQuery: query),
+            ),
+          );
+          return;
+        }
+      }
+    }
+
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text("Aucun médecin trouvé.")));
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Sahatkom', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text(
+          'Sahatkom',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         backgroundColor: Colors.teal.shade700,
         actions: [
           // Search bar
@@ -114,10 +186,15 @@ class HomePage extends StatelessWidget {
             width: 200,
             margin: const EdgeInsets.symmetric(vertical: 8),
             child: TextField(
+              controller: _searchController,
+              onSubmitted: (_) => searchDoctor(),
               decoration: InputDecoration(
                 hintText: 'Rechercher un médecin...',
                 hintStyle: const TextStyle(color: Colors.white70),
-                prefixIcon: const Icon(Icons.search, color: Colors.white),
+                prefixIcon: IconButton(
+                  icon: const Icon(Icons.search, color: Colors.white),
+                  onPressed: searchDoctor,
+                ),
                 filled: true,
                 fillColor: Colors.teal.shade800,
                 contentPadding: const EdgeInsets.symmetric(
@@ -164,7 +241,7 @@ class HomePage extends StatelessWidget {
 }
 
 // ------------------------------------------------------
-// BODY CONTENT
+// BODY CONTENT (unchanged)
 // ------------------------------------------------------
 class _HomeBody extends StatelessWidget {
   const _HomeBody();
@@ -252,8 +329,7 @@ class _HomeBody extends StatelessWidget {
                     ServiceCard(
                       icon: Icons.calendar_today,
                       title: 'Prise de Rendez-vous',
-                      description:
-                          'Réservez facilement avec nos spécialistes.',
+                      description: 'Réservez facilement avec nos spécialistes.',
                     ),
                     ServiceCard(
                       icon: Icons.local_hospital,
@@ -300,7 +376,8 @@ class _HomeBody extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => DoctorsPage(specialty: "Cardiologie"),
+                            builder: (context) =>
+                                DoctorsPage(specialty: "Cardiologie"),
                           ),
                         );
                       },
@@ -314,7 +391,8 @@ class _HomeBody extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => DoctorsPage(specialty: "Ophtalmologie"),
+                            builder: (context) =>
+                                DoctorsPage(specialty: "Ophtalmologie"),
                           ),
                         );
                       },
@@ -328,7 +406,8 @@ class _HomeBody extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => DoctorsPage(specialty: "Pédiatrie"),
+                            builder: (context) =>
+                                DoctorsPage(specialty: "Pédiatrie"),
                           ),
                         );
                       },
@@ -342,7 +421,8 @@ class _HomeBody extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => DoctorsPage(specialty: "Dermatologie"),
+                            builder: (context) =>
+                                DoctorsPage(specialty: "Dermatologie"),
                           ),
                         );
                       },
@@ -356,7 +436,8 @@ class _HomeBody extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => DoctorsPage(specialty: "Psychiatrie"),
+                            builder: (context) =>
+                                DoctorsPage(specialty: "Psychiatrie"),
                           ),
                         );
                       },
@@ -370,7 +451,8 @@ class _HomeBody extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => DoctorsPage(specialty: "Gynécologie"),
+                            builder: (context) =>
+                                DoctorsPage(specialty: "Gynécologie"),
                           ),
                         );
                       },
